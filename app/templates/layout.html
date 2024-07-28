@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+    <head>
+        <meta charset="utf-8" />
+
+        <title>
+            {% block page_title %}Flask-Ecomm-App{% endblock %}
+        </title>
+
+        <!-- Mobile viewport optimized: h5bp.com/viewport -->
+        <meta name="viewport" content="width=device-width" />
+        <style>
+            a {
+                text-decoration: none;
+            }
+            nav ul {
+                padding: 0px;
+            }
+            nav ul li {
+                display: inline-block;
+            }
+        </style>
+    </head>
+
+    <body>
+        {% include "header.html" %}
+
+            {% with messages = get_flashed_messages(with_categories=true) %} 
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                {% endif %} 
+            {% endwith %} 
+        
+        {% block content %}{% endblock %}
+
+        {% include "footer.html" %}
+
+    </body>
+</html>

@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div>
+    <h1>Register</h1>
+    <br/>
+    {% from "_formhelpers.html" import render_field %}
+    <form method="post" action="" autocomplete="on">
+        {{ form.csrf_token }}
+        <dl>
+            {{ render_field(form.f_name) }}
+            {{ render_field(form.l_name) }}
+            {{ render_field(form.dob) }}
+            {{ render_field(form.username) }}
+            {{ render_field(form.email) }}
+            {{ render_field(form.password) }}
+            {{ render_field(form.confirm) }}
+            {{ render_field(form.country_code) }}
+            {{ render_field(form.mobile_number) }}
+            {{ render_field(form.billing_address) }}
+            {{ render_field(form.shipping_address) }}
+            {{ render_field(form.zip_code) }}
+            {{ render_field(form.accept_tos) }}
+        </dl>
+        <p><input type="submit" value="Register">
+    </form>
+
+    <p><em>Already registered?</em> Click <a href="{{ url_for('user.login') }}">here</a> to login.</p>
+</div>
+{% endblock %}
