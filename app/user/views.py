@@ -1,6 +1,8 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask_login import login_user, login_required, logout_user, current_user
 
 from app.database import db
+from app.extensions import bcrypt
 
 from .forms import RegisterForm, LoginForm
 from .models import User
@@ -9,10 +11,10 @@ from .models import User
 blueprint = Blueprint("user", __name__, url_prefix="/user")
 
 
-@blueprint.route("/register", methods=["GET", "POST"])
+@blueprint.route("/signup", methods=["GET", "POST"])
 # @login_required
-def register():
-    form = RegisterForm(request.form)
+def signup():
+    form = SignupForm(request.form)
     if form.validate_on_submit():
         user = User(
                     username=form.username.data, password=form.password.data,
@@ -32,12 +34,16 @@ def register():
 def login():
     form = LoginForm(request.form)
     if form.validate_on_submit():
-        # TODO: Login Logic
+        user = User.query.filter_by(username=self.username.data).first()
+        if not user:
+            User.query.filter_by(email=self.username.data).first()
+        login_user(user, remeber=True)
         flash("You are logged in.", "success")
         return redirect(url_for("index"))
     return render_template("user/login.html", form=form)
 
 @blueprint.route("/logout", methods=["POST"])
+@login_required
 def logout():
-    pass
-
+    logout_user()
+    return redirect(url_for("index"))

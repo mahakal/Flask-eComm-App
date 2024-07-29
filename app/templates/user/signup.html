@@ -2,7 +2,7 @@
 {% block content %}
 
 <div>
-    <h1>Register</h1>
+    <h1>Sign Up</h1>
     <br/>
     {% from "_formhelpers.html" import render_field %}
     <form method="post" action="" autocomplete="on">
@@ -22,7 +22,7 @@
             {{ render_field(form.zip_code) }}
             {{ render_field(form.accept_tos) }}
         </dl>
-        <p><input type="submit" value="Register">
+        <p><input type="submit" value="Sign Up">
     </form>
 
     <p><em>Already registered?</em> Click <a href="{{ url_for('user.login') }}">here</a> to login.</p>

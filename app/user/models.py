@@ -1,10 +1,11 @@
 from datetime import datetime, timezone
+from flask_login import UserMixin
 from sqlalchemy.ext.hybrid import hybrid_property
 
 from app.database import db, Column
 from app.extensions import bcrypt
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     
     id = Column(db.Integer(), primary_key=True, autoincrement=True)
     first_name = Column(db.String(30), nullable=False)

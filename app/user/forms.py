@@ -51,7 +51,7 @@ def valid_username():
     return _u
 
 
-class RegisterForm(FlaskForm):
+class SignupForm(FlaskForm):
     
     f_name = StringField(
         "First Name", validators=[DataRequired(), Length(min=3, max=25)]
@@ -132,7 +132,10 @@ class LoginForm(FlaskForm):
         elif "@" in self.username.data and "." in self.username.data:
             user = User.query.filter_by(email=self.username.data).first()
         if not user:
-                self.username.errors.append("User/Email not registered")
-                return False
+            self.username.errors.append("User/Email not registered")
+            return False
+        if not user.check_password_hash(self.password.data)
+            self.username.errors.append("Incorrect password")
+            return False
         return True
         
