@@ -31,7 +31,6 @@ def email_or_username():
     
     def _e_or_u(form, field):
         input_data = field.data
-        
         # TODO: Better Validation for Email
         if username_regex.search(input_data) and ("@" not in input_data or "." not in input_data):
             raise ValidationError(message) 
@@ -97,10 +96,10 @@ class SignupForm(FlaskForm):
     accept_tos = BooleanField('I accept the TOS', validators=[DataRequired()])
     
     def __init__(self, *args, **kwargs):
-        super(RegisterForm, self).__init__(*args, **kwargs)
+        super(SignupForm, self).__init__(*args, **kwargs)
     
     def validate(self, **kwargs):
-        initial_validation = super(RegisterForm, self).validate()
+        initial_validation = super(SignupForm, self).validate()
         if not initial_validation:
             return False
         user = User.query.filter_by(username=self.username.data).first()
@@ -134,8 +133,8 @@ class LoginForm(FlaskForm):
         if not user:
             self.username.errors.append("User/Email not registered")
             return False
-        if not user.check_password_hash(self.password.data)
-            self.username.errors.append("Incorrect password")
+        if not user.check_password_hash(self.password.data):
+            self.password.errors.append("Incorrect password")
             return False
         return True
         

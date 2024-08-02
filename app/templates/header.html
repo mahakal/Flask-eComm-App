@@ -2,6 +2,8 @@
     <ul>
         <li><a href="{{ url_for('index') }}">Home</a></li>
         {% if current_user.is_authenticated %}
+            <li><a href="{{ url_for('user.profile') }}">Profile</a></li>
+            <li><a href="{{ url_for('user.settings') }}">Settings</a></li>
             <li><a href="{{ url_for('user.logout') }}">Log Out</a></li>
         {% else %}
             <li><a href="{{ url_for('user.login') }}">Log In</a></li>

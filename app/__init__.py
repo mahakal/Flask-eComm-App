@@ -5,6 +5,9 @@ from app.command import init_db
 from app.database import db
 from app.extensions import bcrypt,login_manager
 
+from app.models import *
+from app.product.models import *
+
 
 def create_app(config_object="app.config"):
     app = Flask(__name__)
@@ -20,7 +23,7 @@ def register_extension(app):
     login_manager.init_app(app)
     @login_manager.user_loader
     def load_user(user_id):
-        return User.query.get(int(user_id))
+        return user.model.User.query.get(int(user_id))
 
 def register_blueprint(app):
     app.register_blueprint(user.views.blueprint)

@@ -4,13 +4,14 @@ from sqlalchemy.ext.hybrid import hybrid_property
 
 from app.database import db, Column
 from app.extensions import bcrypt
+from app.models import wishlist, cart
 
 class User(UserMixin, db.Model):
     
-    id = Column(db.Integer(), primary_key=True, autoincrement=True)
+    id = Column(db.Integer, primary_key=True, autoincrement=True)
     first_name = Column(db.String(30), nullable=False)
     last_name = Column(db.String(30), nullable=False)
-    dob = Column(db.Date(), nullable=False)
+    dob = Column(db.Date, nullable=False)
     username = Column(db.String(50), unique=True, nullable=False)
     email = Column(db.String(80), unique=True, nullable=False)
     country_code = Column(db.String(10), nullable=False)
@@ -18,12 +19,20 @@ class User(UserMixin, db.Model):
     _password = Column("password", db.LargeBinary(128), nullable=True)
     billing_address = Column(db.String(80), nullable=False)
     shipping_address = Column(db.String(80), nullable=False)
-    zip_code = Column(db.Integer(), nullable=False)
+    zip_code = Column(db.Integer, nullable=False)
     created_at = Column(db.DateTime, nullable=False, default=datetime.now(timezone.utc))
-    accept_tos = Column(db.Boolean())
-    is_active = Column(db.Boolean(), default=False)
+    accept_tos = Column(db.Boolean)
+    is_active = Column(db.Boolean, default=False)
     is_admin = Column(db.String(80), default=False)
     
+    review = db.relationship("Review", back_populates="user")
+    wishlist_products = db.relationship("Product", secondary=wishlist)
+    cart_products = db.relationship("Product", secondary=cart)
+    order = db.relationship("Order", back_populates="user")
+
+    # wishlist_products = db.relationship("Product", secondary=wishlist, back_populates="wishlist_users")
+    # cart_products = db.relationship("Product", secondary=cart, back_populates="cart_users")
+
     @hybrid_property
     def password(self):
         return self._password
