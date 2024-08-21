@@ -1,7 +1,68 @@
 {% extends "layout.html" %}
+
 {% block content %}
-    <p>{{ current_user.username }}</p>
-    <p>Cart</p>
-    <li>Past Orders</li>
-    <p>Wishlist</p>
+<div class="flex w-full mt-4">
+    <div class="w-1/5 h-[calc(100vh-14rem)] p-6 bg-white shadow-lg rounded-lg">
+        <div class="flex flex-col items-center">
+            <svg class="h-16 w-16 text-gray-500 mb-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M12 12C14.76 12 17 9.76 17 7C17 4.24 14.76 2 12 2C9.24 2 7 4.24 7 7C7 9.76 9.24 12 12 12ZM12 14C8.69 14 2 15.34 2 18.5V21H22V18.5C22 15.34 15.31 14 12 14Z"/>
+            </svg>
+            <p class="text-xl font-semibold text-gray-800">{{ current_user.username }}</p>
+        </div>
+
+        <hr class="my-6 border-gray-300">
+
+        <nav class="space-y-4">
+            <button id="fetch-past-orders" class="block text-lg font-medium text-gray-800 hover:text-blue-600 w-full text-left">
+                Past Orders
+            </button>
+
+            <div class="relative">
+                <button class="w-full text-left text-lg font-medium text-gray-800 focus:outline-none hover:text-blue-600" id="settings-toggle">
+                    Settings
+                </button>
+                <div id="settings-submenu" class="hidden mt-2 space-y-2">
+                    <button id="fetch-personal-details" class="block text-gray-700 px-4 py-2 hover:bg-gray-100 rounded-md w-full text-left">
+                        Personal Details
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <div class="w-4/5 pl-6 bg-white-50" id="content-area">
+    </div>
+</div>
+
+<!-- JavaScript to toggle submenu -->
+<script>
+    document.getElementById('settings-toggle').addEventListener('click', function() {
+        var submenu = document.getElementById('settings-submenu');
+        submenu.classList.toggle('hidden');
+    });
+
+    document.getElementById('fetch-past-orders').addEventListener('click', function() {
+        fetch({{ url_for('profile.past_orders')|tojson }})
+            .then(response => response.text())  // Using .text() instead of .json() to get the HTML content
+            .then(html => {
+                const contentArea = document.getElementById('content-area');
+                console.log(html)
+                contentArea.innerHTML = html;  // Directly insert the returned HTML into the content area
+            })
+            .catch(error => console.error('Error fetching past orders:', error));
+    });
+
+    document.getElementById('fetch-personal-details').addEventListener('click', function() {
+        fetch({{ url_for('profile.user_details')|tojson }})
+            .then(response => response.text())  // Using .text() instead of .json() to get the HTML content
+            .then(html => {
+                const contentArea = document.getElementById('content-area');
+                contentArea.innerHTML = html;  // Directly insert the returned HTML into the content area
+            })
+            .catch(error => console.error('Error fetching past orders:', error));
+    });
+
+</script>
+
+
 {% endblock %}

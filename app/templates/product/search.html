@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6">Results for "{{ query }}":</h2>
+
+        {% if result %}
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                {% from "_productcard.html" import product_card %}
+                    {{ product_card(result) }}
+            </div>
+        {% else %}
+            <div class="text-center py-12">
+                <p class="text-gray-600 text-lg">No products found matching your search.</p>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,19 +1,23 @@
 {% extends "layout.html" %}
+
 {% block content %}
-<div>
-    <h1>Log In</h1>
-    <br/>
+<div class="max-w-md mx-auto p-6 bg-white shadow-md rounded-lg mt-10">
+    <h1 class="text-2xl font-semibold text-gray-800 mb-6">Log In</h1>
 
     {% from "_formhelpers.html" import render_field %}
-    <form method="post" action="" autocomplete="on">
+    <form method="post" action="" autocomplete="on" class="space-y-4">
         {{ form.csrf_token }}
-        <dl>
-            {{ render_field(form.username) }}
-            {{ render_field(form.password) }}
-        </dl>
-        <p><input type="submit" value="Log In">
+
+        <div class="space-y-2">
+            {{ render_field(form.username, class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder="Username/Email") }}
+            {{ render_field(form.password, class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder="Password") }}
+        </div>
+
+        <input type="submit" value="Log In" class="w-full py-3 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 cursor-pointer">
     </form>
 
-    <p><em>Sign up?</em> Click <a href="{{ url_for('user.signup') }}">here</a> to Sign Up.</p>
+    <p class="mt-4 text-center text-gray-600">
+        <em>Sign up?</em> Click <a href="{{ url_for('user.signup') }}" class="text-blue-500 hover:underline">here</a> to Sign Up.
+    </p>
 </div>
 {% endblock %}

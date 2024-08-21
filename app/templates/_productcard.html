@@ -1,0 +1,20 @@
+{% macro product_card(products) %}
+    {% for product in products %}
+        <div class="w-64 mx-auto bg-white rounded-lg shadow-md overflow-hidden block hover:shadow-lg hover:bg-gray-200 transition-shadow duration-300 ease-in-out">
+            <a href="{{ url_for('product.product', product_id=product.id) }}">
+                <div class="p-4">
+                    <img class="mb-4 w-60 h-60 object-fill rounded-md" src="{{ product.image }}" alt="{{ product.name }}">
+                    <h3 class="truncate text-lg font-semibold text-gray-800 mb-2">{{ product.name }}</h3>
+                    <p class="text-l font-semibold text-green-700 text-gray-900 mb-2">${{ product.price }}</p>
+                    <div class="flex items-center font-medium">
+                        {% from "_stars.html" import stars %}
+                        {{ stars('product', product.id, product.average_rating) }}
+                        <span class="ml-2 text-lg font-semibold text-yellow-500">{{ product.average_rating|round }}</span>
+                        <p class="ml-2 text-gray-600 text-sm">({{ product.rating_count }} reviews)</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    {% endfor %}
+{% endmacro %}
+

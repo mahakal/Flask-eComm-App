@@ -1,30 +1,85 @@
 {% extends "layout.html" %}
-{% block content %}
 
-<div>
-    <h1>Sign Up</h1>
-    <br/>
+{% block content %}
+<div class="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-lg mt-10">
+    <h1 class="text-center text-3xl font-semibold text-gray-800 mb-8">Sign Up</h1>
+
     {% from "_formhelpers.html" import render_field %}
-    <form method="post" action="" autocomplete="on">
+    <form method="post" action="" autocomplete="on" class="space-y-6">
         {{ form.csrf_token }}
-        <dl>
-            {{ render_field(form.f_name) }}
-            {{ render_field(form.l_name) }}
-            {{ render_field(form.dob) }}
-            {{ render_field(form.username) }}
-            {{ render_field(form.email) }}
-            {{ render_field(form.password) }}
-            {{ render_field(form.confirm) }}
-            {{ render_field(form.country_code) }}
-            {{ render_field(form.mobile_number) }}
-            {{ render_field(form.billing_address) }}
-            {{ render_field(form.shipping_address) }}
-            {{ render_field(form.zip_code) }}
-            {{ render_field(form.accept_tos) }}
-        </dl>
-        <p><input type="submit" value="Sign Up">
+
+        <div class="flex flex-nowrap gap-x-5 mb-6">
+            <div class="w-full">
+                {{ render_field(form.f_name, class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder="First Name") }}
+            </div>
+            <div class="w-full">
+                {{ render_field(form.l_name, class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder="Last Name") }}
+            </div>
+        </div>
+
+        <div class="w-full">
+            {{ render_field(form.dob, class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder="Date of Birth") }}
+        </div>
+
+        <hr/>
+
+        <div class="flex flex-nowrap gap-x-5 mb-6">
+            <div class="w-full">
+                {{ render_field(form.username, class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder="Username") }}
+            </div>
+            <div class="w-full">
+                {{ render_field(form.email, class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder="Email Address") }}
+            </div>
+        </div>
+
+        <hr/>
+
+        <div class="flex flex-nowrap gap-x-5 mb-6">
+            <div class="w-full">
+                {{ render_field(form.password, class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder="Password") }}
+            </div>
+            <div class="w-full">
+                {{ render_field(form.confirm, class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder="Confirm Password") }}
+            </div>
+        </div>
+
+        <hr/>
+
+        <div class="flex flex-nowrap gap-x-5 mb-6">
+            <div class="w-full">
+                {{ render_field(form.country_code, class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder="Country Code") }}
+            </div>
+            <div class="w-full">
+                {{ render_field(form.mobile_number, class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder="Mobile Number") }}
+            </div>
+        </div>
+
+        <hr/>
+
+        <div class="flex flex-nowrap gap-x-5 mb-6">
+            <div class="basis-2/5">
+                {{ render_field(form.billing_address, class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder="Billing Address") }}
+            </div>
+            <div class="basis-2/5">
+                {{ render_field(form.shipping_address, class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder="Shipping Address") }}
+            </div>
+            <div class="basis-1/5">
+                {{ render_field(form.zip_code, class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder="Zip Code") }}
+            </div>
+        </div>
+
+        <hr/>
+
+        <div class="flex justify-center">
+            {{ render_field(form.accept_tos, class="mr-2 h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500") }}
+            <label for="{{ form.accept_tos.id }}" class="text-gray-700">I accept the Terms of Service</label>
+        </div>
+
+        <button type="submit" class="w-full py-3 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">Sign Up</button>
     </form>
 
-    <p><em>Already registered?</em> Click <a href="{{ url_for('user.login') }}">here</a> to login.</p>
+    <p class="mt-6 text-center text-gray-600">
+        <em>Already registered?</em> Click <a href="{{ url_for('user.login') }}" class="text-blue-500 hover:underline">here</a> to login.
+    </p>
 </div>
 {% endblock %}

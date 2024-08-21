@@ -1,0 +1,37 @@
+<div class="w-full bg-white shadow-md rounded-sm border-black border-2">
+    <div class="pt-10 p-4">
+    <h2 class="text-2xl font-bold text-gray-800 mb-6">User Details</h2>
+
+    <div class="space-y-4">
+        <div class="flex items-center">
+            <span class="font-semibold text-gray-700 w-40">Username:</span>
+            <p class="text-gray-900">{{ current_user.username }}</p>
+        </div>
+
+        <div class="flex items-center">
+            <span class="font-semibold text-gray-700 w-40">Email:</span>
+            <p class="text-gray-900">{{ current_user.email }}</p>
+        </div>
+
+        <div class="flex items-center">
+            <span class="font-semibold text-gray-700 w-40">Mobile Number:</span>
+            <p class="text-gray-900">{{ current_user.mobile_number }}</p>
+        </div>
+
+        <div class="flex items-start">
+            <span class="font-semibold text-gray-700 w-40">Billing Address:</span>
+            <p class="text-gray-900">{{ current_user.active_address.billing_address }}</p>
+        </div>
+
+        <div class="flex items-start">
+            <span class="font-semibold text-gray-700 w-40">Shipping Address:</span>
+            <p class="text-gray-900">{{ current_user.active_address.shipping_address }}</p>
+        </div>
+
+        <div class="flex items-center">
+            <span class="font-semibold text-gray-700 w-40">Zip Code:</span>
+            <p class="text-gray-900">{{ current_user.active_address.zip_code }}</p>
+        </div>
+    </div>
+</div>
+</div>

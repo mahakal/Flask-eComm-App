@@ -10,33 +10,39 @@
 
         <!-- Mobile viewport optimized: h5bp.com/viewport -->
         <meta name="viewport" content="width=device-width" />
-        <style>
-            a {
-                text-decoration: none;
-            }
-            nav ul {
-                padding: 0px;
-            }
-            nav ul li {
-                display: inline-block;
-            }
-        </style>
+        <!-- <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp,container-queries"></script> -->
+        <link rel="stylesheet" href="{{url_for('static', filename='css/output-style.css')}}">
     </head>
 
     <body>
-        {% include "header.html" %}
+        <div class="flex flex-col min-h-screen">
+                {% include "header.html" %}
 
-            {% with messages = get_flashed_messages(with_categories=true) %} 
-                {% if messages %}
-                    {% for category, message in messages %}
-                        <p>{{ message }}</p>
-                    {% endfor %}
-                {% endif %} 
-            {% endwith %} 
-        
-        {% block content %}{% endblock %}
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                {% if category == "success" %}
+                                <div class="flex place-content-center" id="flash" onclick=this.remove()>
+                                    <div class="flex place-content-center w-1/2 p-2 mt-6 text-lg font-bold text-gray-300 rounded-md bg-emerald-800 border-yellow-400 border-2" role="alert">
+                                        <span>{{ message }}</span>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
 
-        {% include "footer.html" %}
+                <div class="m-6 grow">
+                    {% block content %}{% endblock %}
+                </div>
 
+                {% include "footer.html" %}
+        </div>
     </body>
+    <script>
+        setTimeout(() => {
+            messages = document.querySelectorAll("#flash");
+            messages.forEach(mesg => mesg.remove())
+        }, 2000);
+    </script>
 </html>

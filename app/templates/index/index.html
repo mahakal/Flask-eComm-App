@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="flex justify-center">
+        <div class="max-w-7xl grid gap-x-8 gap-y-12 grid-cols-4">
+            {% from "_productcard.html" import product_card %}
+                {{ product_card(products) }}
+        </div>
+    </div>
+{% endblock %}

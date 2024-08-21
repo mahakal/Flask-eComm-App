@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="flex justify-center">
+<div id="wishlist-container" class="max-w-4xl p-6 bg-gray-100">
+    {% if products %}
+        <form method="POST" action="{{ url_for('product.checkout') }}" id="wishlist-form" class="space-y-6">
+            <div id="wishlist-list" class="bg-white rounded-lg shadow-lg">
+                {% for product in products %}
+                    <div id="{{ product.id }}" class="flex items-center p-4">
+                        <input type="checkbox" name="product" value="{{ product.id }}" checked class="mr-4 rounded-sm focus:ring-offset-0 focus:ring-0">
+                        <a href="{{ url_for('product.product', product_id=product.id) }}" class="flex grow items-center space-x-5">
+                            <img src="{{ product.image }}" alt="{{ product.name }}" class="shrink-0 object-fill w-24 h-24 rounded-md">
+                            <div class="flex flex-col">
+                                <p class="text-lg font-semibold text-gray-800">{{ product.name }}</p>
+                                <p class="text-md font-medium text-green-700">${{ product.price }}</p>
+                                <div class="flex items-center font-medium mt-1">
+                                    {% from "_stars.html" import stars %}
+                                    {{ stars('p', product.id, product.average_rating) }}
+                                    <p class="ml-2 text-sm text-gray-600">({{ product.rating_count }} reviews)</p>
+                                </div>
+                            </div>
+                        </a>
+                        <input type="button" value="Remove from wishlist" name="wishlist" onclick="remove({{ product.id }})" class="ml-4 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">
+                    </div>
+                {% endfor %}
+            </div>
+            <input type="submit" value="Buy Now" name="buy" id="wishlist_checkout" class="w-full py-3 bg-green-500 text-white rounded-md hover:bg-green-600">
+        </form>
+    {% else %}
+        <p class="text-center text-gray-500">Your wishlist is empty</p>
+    {% endif %}
+</div>
+</div>
+
+<script type="text/javascript">
+    function remove(productId) {
+        fetchUrl = {{ url_for("profile.wishlist")|tojson }} + "/" + productId;
+        fetch(fetchUrl, {
+            method: "DELETE",
+            redirect: "follow"
+        }).then(response => {
+            if(response.redirected)
+                window.location.href = response.url;
+
+            document.getElementById(productId).remove();
+            wishlistList = document.getElementById("wishlist-list");
+            if (!wishlistList.children.length) {
+                document.getElementById("wishlist-form").remove()
+                p_node = document.createElement("p");
+                p_node.classList.add("text-center")
+                p_node.classList.add("text-gray-500")
+                p_node.appendChild(document.createTextNode("Your wishlist is empty"));
+                document.getElementById("wishlist-container").appendChild(p_node)
+            }
+        }).catch(err => {
+            console.log(err.message);
+        });
+    }
+    const checkboxes = [...document.querySelectorAll('input[type=checkbox]')]
+    const submitBtn = document.getElementById('wishlist_checkout')
+
+    checkboxes.forEach(checkbox => {
+    checkbox.addEventListener('click', () => {
+        checkboxes.some(x=>x.checked) ? submitBtn.removeAttribute('disabled') : submitBtn.setAttribute('disabled','')
+    })
+    })
+    checkboxes.some(x=>x.checked) ? submitBtn.removeAttribute('disabled') : submitBtn.setAttribute('disabled','')
+
+</script>
+{% endblock %}

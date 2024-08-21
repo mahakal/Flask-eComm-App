@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto p-6 bg-white shadow-xl rounded-sm border-black border">
+    {% if products %}
+        <form method="POST" action="{{ url_for('product.order') }}" class="space-y-6">
+            <div class="bg-gray-100 rounded-lg divide-y divide-dashed divide-gray-400/90">
+            {% for product in products %}
+                <div class="flex space-x-5 p-4">
+                    <img src="{{ product.image }}" alt="{{ product.name }}" class="shrink-0 w-24 h-24 object-fill rounded-md">
+                    <div>
+                        <p class="text-lg font-semibold text-gray-800">Product Name: {{ product.name }}</p>
+                        <p class="text-sm font-medium text-gray-600">Product Price: <span class="text-green-700">${{ product.price }}</span></p>
+                        <p class="text-sm text-gray-600">Product Brand: {{ product.brand }}</p>
+                        <div class="flex items-center font-medium  mt-1">
+                            {% from "_stars.html" import stars %}
+                            {{ stars('p', product.id, product.average_rating) }}
+                            <p class="ml-2 text-sm text-gray-600">({{ product.rating_count }} reviews)</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+
+            <p class="flex justify-end text-lg font-semibold text-gray-800">Total Price: <span class="text-green-700">${{ total }}</span></p>
+            <div class="mb-4">
+                <label for="method" class="block text-gray-700 font-semibold">Payment Method:</label>
+                <select name="method" id="method" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="Cash On Delivery">Cash On Delivery</option>
+                    <option value="Net Banking">Net Banking</option>
+                    <option value="Debit Card">Debit Card</option>
+                    <option value="E-Wallet">E-Wallet</option>
+                    <option value="PayPal">PayPal</option>
+                    <option value="Stripe">Stripe</option>
+                </select>
+                <hr class="mt-10"/>
+            </div>
+            <div>
+            <table class="table-auto text-gray-700 my-10 w-full border-collapse">
+                <tbody>
+                    <tr class="border-b">
+                        <td class="py-2 pr-4">Username:</td>
+                        <td class="py-2 font-medium">{{ current_user.username }}</td>
+                    </tr>
+                    <tr class="border-b">
+                        <td class="py-2 pr-4">Email:</td>
+                        <td class="py-2 font-medium">{{ current_user.email }}</td>
+                    </tr>
+                    <tr class="border-b">
+                        <td class="py-2 pr-4">Mobile Number:</td>
+                        <td class="py-2 font-medium">{{ current_user.mobile_number }}</td>
+                    </tr>
+                    <tr class="border-b">
+                        <td class="py-2 pr-4">Billing Address:</td>
+                        <td class="py-2 font-medium">{{ current_user.active_address.billing_address }}</td>
+                    </tr>
+                    <tr class="border-b">
+                        <td class="py-2 pr-4">Shipping Address:</td>
+                        <td class="py-2 font-medium">{{ current_user.active_address.shipping_address }}</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2 pr-4">Zip Code:</td>
+                        <td class="py-2 font-medium">{{ current_user.active_address.zip_code }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+            <p class="flex justify-end text-gray-700 font-semibold">Delivery Time: <span class="text-gray-600">4-6 Days</span></p>
+
+            <input type="submit" name="Order" value="Place Order" class="w-full py-3 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600">
+        </form>
+    {% else %}
+        <p class="text-center text-gray-500">Nothing to Checkout!</p>
+    {% endif %}
+</div>
+{% endblock %}
