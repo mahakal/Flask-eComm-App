@@ -1,17 +1,17 @@
 {% macro product_card(products) %}
     {% for product in products %}
-        <div class="w-64 mx-auto bg-white rounded-lg shadow-md overflow-hidden block hover:shadow-lg hover:bg-gray-200 transition-shadow duration-300 ease-in-out">
+		<div class="w-48 mx-auto ">
             <a href="{{ url_for('product.product', product_id=product.id) }}">
-                <div class="p-4">
-                    <img class="mb-4 w-60 h-60 object-fill rounded-md" src="{{ product.image }}" alt="{{ product.name }}">
-                    <h3 class="truncate text-lg font-semibold text-gray-800 mb-2">{{ product.name }}</h3>
-                    <p class="text-l font-semibold text-green-700 text-gray-900 mb-2">${{ product.price }}</p>
-                    <div class="flex items-center font-medium">
+                <div class="p-1">
+					<img class="mx-auto my-2 w-52 h-56 object-fill border-2 border-gray-100 rounded" src="{{ product.image }}" alt="{{ product.name }}">
+                    <h3 class="text-base font-semibold text-gray-800 line-clamp-2">{{ product.name }}</h3>
+                    <div class="flex items-center mb-px">
                         {% from "_stars.html" import stars %}
-                        {{ stars('product', product.id, product.average_rating) }}
-                        <span class="ml-2 text-lg font-semibold text-yellow-500">{{ product.average_rating|round }}</span>
-                        <p class="ml-2 text-gray-600 text-sm">({{ product.rating_count }} reviews)</p>
+                        {{ stars('product', product.id, product.average_rating, 14) }}
+                        <span class="ml-1 pt-1 text-sm font-semibold text-yellow-500 leading-none">{{ '%0.2f' % product.average_rating|float|round(2) }}</span>
+                        <p class="ml-2 pt-1 text-xs text-gray-600 inline-block align-bottom leading-none">({{ product.rating_count }} reviews)</p>
                     </div>
+					<p class="text-lg font-semibold text-green-700 text-gray-900 mb-px">${{ '%0.2f' % product.price|float|round(2) }}</p>
                 </div>
             </a>
         </div>

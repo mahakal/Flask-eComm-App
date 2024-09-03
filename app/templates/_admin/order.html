@@ -1,0 +1,87 @@
+{% if orders %}
+<div>
+    <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-semibold pl-2">Order List</h2>
+        <div class="flex space-x-2">
+            <input type="text" placeholder="Order No." class="block w-32 border-gray-300 rounded-md shadow-sm">
+            <button class="bg-blue-500 text-white px-4 py-2 rounded-md">Query</button>
+        </div>
+    </div>
+
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white border border-gray-300">
+            <thead>
+                <tr class="bg-gray-200 text-gray-600 uppercase text-left text-sm leading-normal">
+                    <th class="py-3 px-6">ID</th>
+                    <th class="py-3 px-6">Number</th>
+                    <th class="py-3 px-6">Status</th>
+                    <th class="py-3 px-6">Total</th>
+                    <th class="py-3 px-6">User</th>
+                    <th class="py-3 px-6">Created At</th>
+                </tr>
+            </thead>
+            <tbody class="text-gray-600 text-sm">
+                {% for order in orders %}
+                <tr class="hover:bg-gray-100 border-b border-gray-300" onclick="document.getElementById(`details-{{ order.id }}`).classList.toggle('hidden');">
+                    <td class="py-3 px-6">{{ order.id }}</td>
+                    <td class="py-3 px-6">{{ order.order_id }}</td>
+                    <td class="py-3 px-6">{{ order.order_status }}</td>
+                    <td class="py-3 px-6 text-green-700">${{ '%0.2f' % order.total|float|round(2) }}</td>
+                    <td class="py-3 px-6">{{ order.user.first_name }} {{ order.user.last_name }}</td>
+                    <td class="py-3 px-6">{{ order.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                </tr>
+				<tr id="details-{{ order.id }}" class="hidden bg-gray-50">
+					<td colspan="6" class="p-4">
+					  <div class="grid grid-cols-2 gap-4">
+						<div class="space-y-1">
+							<h3 class="font-bold mb-2">User Details:</h3>
+							<p>Full Name: {{ order.user.first_name }} {{ order.user.last_name }}</p>
+							<p>Username: {{ order.user.username }}</p>
+							<p>Email: {{ order.user.email }}</p>
+							<p>Mobile: {{ order.user.mobile_number }}</p>
+							<p>Billing Addres:  {{ order.address.billing_address }}</p>
+							<p>Shipping Address:  {{ order.address.shipping_address }}</p>
+							<p>Zip Code: {{ order.address.zip_code }}</p>
+							<p>Active Address: {{ order.address.is_active }}</p>
+						</div>
+						<div>
+						  <h3 class="font-bold mb-2">Product Details:</h3>
+						  {% for product in order.products %}
+						  <div class="flex mb-2">
+							<img src="{{ product.image }}" alt="{{ product.name }}" class="shrink-0 object-fill w-24 h-24 rounded-md">
+							<div class="ml-2">
+								<p class="truncate">{{ product.name }}</p>
+								<p class="text-green-700">${{ '%0.2f' % product.price|float|round(2) }}</p>
+								<p>Brand: {{ product.brand }}</p>
+								<p>Qunatity: {{ product.quantity }}</p>
+							</div>
+						  </div>
+						  {% endfor %}
+						</div>
+					  </div>
+					</td>
+				  </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="flex justify-end mt-4">
+        <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
+            <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                &laquo;
+            </a>
+            <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">1</a>
+            <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                &raquo;
+            </a>
+        </nav>
+    </div>
+</div>
+{% else %}
+<div class="w-full shadow-md rounded-sm border-black border-2">
+	<div class="flex justify-center items-center h-80 shadow-sm">
+	  <p class="bg-gray-100 p-8 text-gray-500">No Orders have been placed yet!!</p>
+	</div>
+  </div>
+{% endif %}

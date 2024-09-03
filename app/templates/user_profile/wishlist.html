@@ -1,10 +1,11 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="flex justify-center">
+<div class="mt-20 flex justify-center">
 <div id="wishlist-container" class="max-w-4xl p-6 bg-gray-100">
     {% if products %}
-        <form method="POST" action="{{ url_for('product.checkout') }}" id="wishlist-form" class="space-y-6">
+        <!-- <form method="POST" action="{{ url_for('product.checkout') }}" id="wishlist-form" class="space-y-6">-->
+		<form method="POST" action="{{ url_for('profile.wishlist') }}" id="wishlist-form" class="space-y-6">
             <div id="wishlist-list" class="bg-white rounded-lg shadow-lg">
                 {% for product in products %}
                     <div id="{{ product.id }}" class="flex items-center p-4">
@@ -12,8 +13,8 @@
                         <a href="{{ url_for('product.product', product_id=product.id) }}" class="flex grow items-center space-x-5">
                             <img src="{{ product.image }}" alt="{{ product.name }}" class="shrink-0 object-fill w-24 h-24 rounded-md">
                             <div class="flex flex-col">
-                                <p class="text-lg font-semibold text-gray-800">{{ product.name }}</p>
-                                <p class="text-md font-medium text-green-700">${{ product.price }}</p>
+                                <p class="text-lg font-semibold text-gray-800 ">{{ product.name }}</p>
+                                <p class="text-md font-medium text-green-700">${{ '%0.2f' % product.price|float|round(2) }}</p>
                                 <div class="flex items-center font-medium mt-1">
                                     {% from "_stars.html" import stars %}
                                     {{ stars('p', product.id, product.average_rating) }}
@@ -21,11 +22,13 @@
                                 </div>
                             </div>
                         </a>
-                        <input type="button" value="Remove from wishlist" name="wishlist" onclick="remove({{ product.id }})" class="ml-4 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">
+						<div class="ml-6 m-4" onclick="remove({{ product.id }})">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+						</div>
                     </div>
                 {% endfor %}
             </div>
-            <input type="submit" value="Buy Now" name="buy" id="wishlist_checkout" class="w-full py-3 bg-green-500 text-white rounded-md hover:bg-green-600">
+            <input type="submit" value="Move To Cart" name="buy" id="moveToCart" class="w-full py-3 bg-green-500 text-white rounded-md hover:bg-green-600">
         </form>
     {% else %}
         <p class="text-center text-gray-500">Your wishlist is empty</p>
@@ -43,7 +46,8 @@
             if(response.redirected)
                 window.location.href = response.url;
 
-            document.getElementById(productId).remove();
+            productDiv = document.getElementById(productId).remove();
+			toggleSubmit(submitBtn)
             wishlistList = document.getElementById("wishlist-list");
             if (!wishlistList.children.length) {
                 document.getElementById("wishlist-form").remove()
@@ -57,15 +61,33 @@
             console.log(err.message);
         });
     }
-    const checkboxes = [...document.querySelectorAll('input[type=checkbox]')]
-    const submitBtn = document.getElementById('wishlist_checkout')
+
+	function toggleSubmit(submitBtn) {
+		const checkBoxes = [...document.getElementById('wishlist-container').querySelectorAll('input[type=checkbox]')]
+		//const checkBoxes = [...document.querySelectorAll('input[type=checkbox]')]
+		console.log(checkBoxes);
+		if(checkBoxes.some(x=>x.checked)) {
+			submitBtn.removeAttribute("disabled");
+			submitBtn.classList.replace("bg-gray-500", "bg-green-500");
+			submitBtn.classList.add("hover:bg-green-600");
+		} else {
+			submitBtn.setAttribute("disabled","");
+			submitBtn.classList.replace("bg-green-500", "bg-gray-500");
+			submitBtn.classList.remove("hover:bg-green-600")
+		}
+	}
+
+    const checkboxes = [...document.getElementById("wishlist-container").querySelectorAll("input[type=checkbox]")]
+    const submitBtn = document.getElementById("moveToCart")
 
     checkboxes.forEach(checkbox => {
-    checkbox.addEventListener('click', () => {
-        checkboxes.some(x=>x.checked) ? submitBtn.removeAttribute('disabled') : submitBtn.setAttribute('disabled','')
+		checkbox.addEventListener("click", () => {
+			toggleSubmit(submitBtn)
+		})
     })
-    })
-    checkboxes.some(x=>x.checked) ? submitBtn.removeAttribute('disabled') : submitBtn.setAttribute('disabled','')
+	checkboxes.forEach(checkbox => {
+		toggleSubmit(submitBtn);
+	});
 
 </script>
 {% endblock %}

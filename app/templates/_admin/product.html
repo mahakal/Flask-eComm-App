@@ -1,0 +1,68 @@
+{% if products %}
+<div>
+    <div>
+		<div class="flex justify-between items-center mb-4">
+			<h2 class="text-xl font-semibold pl-2">Product List</h2>
+			<div class="flex space-x-2">
+				<input type="text" placeholder="Product Name" class="block w-36 border-gray-300 rounded-md shadow-sm">
+				<button class="bg-blue-500 text-white px-4 py-2 rounded-md">Query</button>
+			</div>
+		</div>
+
+		<div class="overflow-x-auto">
+			<table class="min-w-full bg-white border border-gray-300">
+				<thead>
+					<tr class="bg-gray-200 text-gray-600 uppercase text-left text-sm leading-normal">
+						<th class="py-3 px-6">ID</th>
+						<th class="py-3 px-6">Name</th>
+						<th class="py-3 px-6">Image</th>
+						<th class="py-3 px-6">Price</th>
+						<th class="py-3 px-6">Sold Count</th>
+						<th class="py-3 px-6">Stock</th>
+						<th class="py-3 px-6">sku</th>
+						<th class="py-3 px-6">Weight</th>
+						<th class="py-3 px-6">Dimensions</th>
+						<th class="py-3 px-6">Added On</th>
+						<th class="py-3 px-6">Updated On</th>
+					</tr>
+				</thead>
+				<tbody class="text-gray-600 text-sm">
+					{% for product in products %}
+					<tr class="hover:bg-gray-100 border-b border-gray-300" onclick="document.getElementById(`details-{{ product.id }}`).classList.toggle('hidden');">
+						<td class="py-3 px-6">{{ product.id }}</td>
+						<td class="py-3 px-6">{{ product.name }}</td>
+						<td class="py-3 px-6"><img src={{ product.image }} alt={{ product.name }} class="w-8 h-8 transition duration-300 ease-in-out hover:scale-[5.0] "></td>
+						<td class="py-3 px-6">{{ '%0.2f' % product.price|float|round(2) }}</td>
+						<td class="py-3 px-6">{{ product.sold_count }}</td>
+						<td class="py-3 px-6">{{ product.stock }}</td>
+						<td class="py-3 px-6">{{ product.sku }}</td>
+						<td class="py-3 px-6">{{ product.weight }}</td>
+						<td class="py-3 px-6">{{ product.dimensions }}</td>
+						<td class="py-3 px-6">{{ product.added_on.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+						<td class="py-3 px-6">{{ product.updated_at.strftime('%Y-%m-%d %H:%M:%S') if product.updated_at else product.updated_at }}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	
+
+		<div class="flex justify-end mt-4">
+			<nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
+				<a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+					&laquo;
+				</a>
+				<a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">1</a>
+				<a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+					&raquo;
+				</a>
+			</nav>
+		</div>
+
+    </div>
+</div>
+{% else %}
+<div class="w-full shadow-md rounded-sm border-black border-2">
+    <div class="flex justify-center items-center h-80 shadow-sm"><p class="bg-gray-100 p-8 text-gray-500">No Products in the store!!</p></div>
+</div>
+{% endif %}

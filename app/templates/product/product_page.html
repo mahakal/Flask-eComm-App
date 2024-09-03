@@ -15,7 +15,7 @@
 
 {% from "_stars.html" import stars %}
 
-<div class="flex justify-center">
+<div class="flex justify-center pt-10">
     <div class="flex max-w-7xl space-x-4">
         <img class="object-fill rounded-md w-1/3 h-[30rem]" src="{{ product.image }}" alt="{{ product.name }}">
         <div class="flex flex-col w-2/3">
@@ -29,7 +29,7 @@
                 <small class="text-gray-500">{{ product.brand }}</small>
             </div>
             <p class="mt-2 text-gray-700">{{ product.description }}</p>
-            <p class="mt-2 text-lg font-semibold text-green-700">Price: ${{ product.price }}</p>
+            <p class="mt-2 text-lg font-semibold text-green-700">Price: ${{ '%0.2f' % product.price|float|round(2) }}</p>
 
             <div class="mt-4 space-x-2">
                 <input type="button" value="{{ cart_value }}" name="cart" onclick="onClick('Cart', {{ product.id }})" id="c{{ product.id }}" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">

@@ -1,3 +1,4 @@
+{% if orders %}
 <div class="w-full shadow-md rounded-sm border-black border-2 border-b ">
     {% for order in orders %}
         <div class="pt-10 p-4 bg-white shadow-sm border-black border-b">
@@ -49,3 +50,8 @@
         </div>
     {% endfor %}
 </div>
+{% else %}
+<div class="w-full shadow-md rounded-sm border-black border-2">
+    <div class="flex justify-center items-center h-80 shadow-sm"><p class="bg-gray-100 p-8 text-gray-500">No Orders placed yet!!</p></div>
+</div>
+{% endif %}

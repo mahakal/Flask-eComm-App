@@ -11,12 +11,25 @@ class Product(db.Model):
 	id = Column(db.Integer, primary_key=True, autoincrement=True)
 	name = Column(db.String(30), nullable=False)
 	description = Column(db.String(150), nullable=False)
-	price = Column(db.Integer, nullable=False)
+	price = Column(db.Float, nullable=False)
+	tax = Column(db.Float, default=0)
+	sold_count = Column(db.Integer, default=0)
+	sale_price = Column(db.Float, default=0)
+	sale_start_time = Column(db.DateTime)
+	sale_end_time = Column(db.DateTime)
 	image = Column(db.String(200), nullable=False)
 	stock = Column(db.Integer, nullable=False)
+	sku = Column(db.String(100), unique=True)
+	weight = Column(db.Float)
+	dimensions = Column(db.String(100))
 	brand = Column(db.String(50))
 	added_on = Column(
 		db.DateTime, nullable=False, default=datetime.now(timezone.utc)
+	)
+	updated_at = Column(
+		db.DateTime,
+		default=datetime.now(timezone.utc),
+		onupdate=datetime.now(timezone.utc),
 	)
 
 	category_id = Column(db.Integer, db.ForeignKey("category.id"))
@@ -43,6 +56,23 @@ class Product(db.Model):
 	@aggregated("reviews", Column(db.Integer))
 	def rating_count(self):
 		return func.count(Review.comment)
+
+	@property
+	def is_on_sale(self):
+		now = datetime.now(timezone.utc)
+		if isinstance(self.sale_start_time, datetime) and isinstance(
+			self.sale_end_time, datetime
+		):
+			return (
+				self.sale_price is not None
+				and self.sale_start_time <= now <= self.sale_end_time
+			)
+		else:
+			return False
+
+	@property
+	def current_price(self):
+		return self.sale_price if self.is_on_sale else self.price
 
 
 class Category(db.Model):

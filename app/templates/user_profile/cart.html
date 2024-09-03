@@ -1,29 +1,68 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="flex justify-center">
-<div id="cart-container" class="max-w-4xl p-6 bg-gray-100 ">
+<div class="mt-20 flex justify-center">
+<div id="cart-container" class="max-w-7xl p-6 bg-gray-100 ">
     {% if products %}
         <form method="POST" action="{{ url_for('product.checkout') }}" id="cart-form" class="space-y-6">
-            <div id="cart-list" class="bg-white rounded-lg shadow-lg">
-                {% for product in products %}
-                    <div id="{{ product.id }}" class="flex items-center p-4">
-                        <input type="checkbox" name="product" value="{{ product.id }}" class="mr-4 rounded-sm focus:ring-offset-0 focus:ring-0" checked>
-                        <a href="{{ url_for('product.product', product_id=product.id) }}" class="flex grow items-center space-x-5">
-                            <img src="{{ product.image }}" alt="{{ product.name }}" class="shrink-0 object-fill w-24 h-24 rounded-md">
-                            <div class="flex flex-col">
-                                <p class="text-lg font-semibold text-gray-800">{{ product.name }}</p>
-                                <p class="text-md font-medium text-green-700">${{ product.price }}</p>
-                                <div class="flex items-center font-medium  mt-1">
-                                    {% from "_stars.html" import stars %}
-                                    {{ stars('p', product.id, product.average_rating) }}
-                                    <p class="ml-2 text-sm text-gray-600">({{ product.rating_count }} reviews)</p>
-                                </div>
-                            </div>
-                        </a>
-                        <input type="button" value="Remove from cart" name="cart" onclick="remove({{ product.id }})" class="ml-4 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">
-                    </div>
-                {% endfor %}
+            <div class="bg-white rounded-lg shadow-lg">
+				<div class="overflow-x-auto">
+					<table class="min-w-full bg-white border border-gray-300">
+						<thead class="border-b border-gray-300">
+							<tr class=" text-gray-600 uppercase text-left text-sm leading-normal">
+								<th class="py-3 px-6"></th>
+								<th class="py-3 px-6">Product</th>
+								<th class="py-3 px-6">Price</th>
+								<th class="py-3 px-6">Quantity</th>
+								<th class="py-3 px-6">Subtotal</th>
+								<th class="py-3 px-6"></th>
+							</tr>
+						</thead>
+						<tbody class="text-gray-600 text-sm" id="cart-list">
+							{% for product in products %}
+							<tr class="border-b border-gray-300" id={{ product.id }}>
+								<td class="py-3 px-6"><input type="checkbox" name="product" value="{{ product.id }}" class="mr-4 rounded-sm focus:ring-offset-0 focus:ring-0" checked></td>
+								<td class="py-3 px-6">
+									<a href="{{ url_for('product.product', product_id=product.id) }}" class="flex grow items-center space-x-5">
+										<img src="{{ product.image }}" alt="{{ product.name }}" class="shrink-0 object-fill w-24 h-24 rounded-md transition duration-300 ease-in-out hover:scale-[2.0]">
+										<div class="flex flex-col pl-10">
+											<p class="text-base font-semibold text-gray-800 line-clamp-3">{{ product.name }}</p>
+											<div class="flex items-center font-medium  mt-1">
+												{% from "_stars.html" import stars %}
+												{{ stars('p', product.id, product.average_rating) }}
+												<p class="ml-2 text-sm text-gray-600">({{ product.rating_count }} reviews)</p>
+											</div>
+										</div>
+									</a>
+								</td>
+								<td class="py-3 px-6 text-base font-medium text-green-700" data-id="price">${{ '%0.2f' % product.price|float|round(2) }}</td>
+								<td class="py-3 px-6">
+									<div class="flex flex-row h-10 w-24 bg-transparent border border-gray-200">
+										<button type="button" data-action="decrement" class="px-1 bg-transparent text-gray-600 hover:text-gray-700 hover:bg-gray-200">
+											<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+										</button>
+										<input name="{{ product.id }}" value="1" min="1" max="100" type="number" class="flex items-center text-gray-700 text-center w-full bg-transparent font-semibold hover:text-black focus:text-black border-0 focus:ring-offset-0 focus:ring-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none" style="-moz-appearance: textfield;">
+										<button type="button" data-action="increment" class="px-1 bg-transparent text-gray-600 hover:text-gray-700 hover:bg-gray-200">
+											<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+										</button>
+									</div>
+								</td>
+								<td class="py-3 px-6 text-base font-medium text-green-700" data-id="subTotal">${{ '%0.2f' % product.price|float|round(2) }}</td>
+								<td class="py-3 px-6"><div class="ml-6 m-4" onclick="remove(event, {{ product.id }})">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+								</div></td>
+							</tr>
+							{% endfor %}
+							<tr class="border-b border-gray-300">
+								<td class="py-3 px-6"></td>
+								<td class="py-3 px-6"></td>
+								<td class="py-3 px-6"></td>
+								<td class="py-3 px-6 text-lg font-semibold">Cart Total: </td>
+								<td class="py-3 px-6 text-lg font-semibold text-green-700" id="cartTotal">${{ '%0.2f' % cart_total|float|round(2) }}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
             </div>
             <input type="submit" value="Buy Now" name="buy" id="cart_checkout" class="w-full py-3 bg-green-500 text-white rounded-md hover:bg-green-600">
         </form>
@@ -34,7 +73,7 @@
 </div>
 
 <script type="text/javascript">
-    function remove(productId) {
+    function remove(e, productId) {
         fetchUrl = {{ url_for("profile.cart")|tojson }} + "/" + productId;
         fetch(fetchUrl, {
             method: "DELETE",
@@ -42,10 +81,20 @@
         }).then(response => {
             if(response.redirected)
                 window.location.href = response.url;
-
+			
+			cartTotal = document.getElementById("cartTotal");
+			cartTotalFloat = parseFloat(cartTotal.textContent.replace("$", ""))
+			subTotal = e.target.closest("tr").querySelector("td[data-id='subTotal']").textContent;
+			subTotal = parseFloat(subTotal.replace("$", ""))
+			checkbox = e.target.closest("tr").querySelector("input[type=checkbox]")
+			if(checkbox.checked){
+				cartTotalFloat -= subTotal;
+				cartTotal.innerHTML = "$" + (cartTotalFloat).toFixed(2);
+			}
             document.getElementById(productId).remove();
+			toggleSubmit(submitBtn);
             cartList = document.getElementById("cart-list");
-            if (!cartList.children.length) {
+            if (cartList.children.length == 1) {
                 document.getElementById("cart-form").remove()
                 p_node = document.createElement("p");
                 p_node.classList.add("text-center")
@@ -57,15 +106,104 @@
             console.log(err.message);
         });
     }
-    const checkboxes = [...document.querySelectorAll('input[type=checkbox]')]
-    const submitBtn = document.getElementById('cart_checkout')
+
+	function toggleSubmit(submitBtn) {
+		const checkBoxes = [...document.getElementById('cart-container').querySelectorAll('input[type=checkbox]')]
+		if(checkBoxes.some(x=>x.checked)) {
+			submitBtn.removeAttribute("disabled");
+			submitBtn.classList.replace("bg-gray-500", "bg-green-500");
+			submitBtn.classList.add("hover:bg-green-600");
+		} else {
+			submitBtn.setAttribute("disabled","");
+			submitBtn.classList.replace("bg-green-500", "bg-gray-500");
+			submitBtn.classList.remove("hover:bg-green-600")
+		}
+	}
+
+    const checkboxes = [...document.getElementById('cart-container').querySelectorAll("input[type=checkbox]")]
+    const submitBtn = document.getElementById("cart_checkout")
 
     checkboxes.forEach(checkbox => {
-    checkbox.addEventListener('click', () => {
-        checkboxes.some(x=>x.checked) ? submitBtn.removeAttribute('disabled') : submitBtn.setAttribute('disabled','')
-    })
-    })
-    checkboxes.some(x=>x.checked) ? submitBtn.removeAttribute('disabled') : submitBtn.setAttribute('disabled','')
+		checkbox.addEventListener("click", (e) => {
+			toggleSubmit(submitBtn);
+			subTotal = e.target.closest("tr").querySelector("td[data-id='subTotal']").textContent;
+			subTotal = parseFloat(subTotal.replace("$", ""))
+			cartTotal = document.getElementById("cartTotal");
+			cartTotalFloat = parseFloat(cartTotal.textContent.replace("$", ""))
+			if(!e.target.checked){
+				cartTotalFloat -= subTotal;
+				cartTotal.innerHTML = "$" + (cartTotalFloat).toFixed(2);
+
+			} else {
+				cartTotalFloat += subTotal;
+				cartTotal.innerHTML = "$" + (cartTotalFloat).toFixed(2);
+			}
+		})
+    });
+	checkboxes.forEach(checkbox => {
+		toggleSubmit(submitBtn);
+	});
+
+	function decrement(e) {
+		const btn = e.target.closest("td").querySelector(
+		  "button[data-action='decrement']"
+		);
+		const target = btn.nextElementSibling;
+		let value = Number(target.value);
+		if(value > 1)
+		{	
+			value--;
+			target.value = value;
+			changeSubTotal(e, value, "decrement");
+		}
+	}
+	
+	function increment(e) {
+		const btn = e.target.closest("td").querySelector(
+			"button[data-action='increment']"
+		);
+		const target = btn.previousElementSibling;
+		let value = Number(target.value);
+		if(value < 100)
+		{	
+			value++
+			target.value = value;
+			changeSubTotal(e, value, "increment");
+		}
+	}
+
+	function changeSubTotal(e, quantity, op) {
+		price = e.target.closest("td").previousElementSibling.textContent;
+		subTotal = e.target.closest("td").nextElementSibling;
+		price = parseFloat(price.replace("$", ""));
+		subTotal.innerHTML = "$" + (price * quantity).toFixed(2);
+		cartTotal = document.getElementById("cartTotal");
+		cartTotalFloat = parseFloat(cartTotal.textContent.replace("$", ""));
+		checkbox = e.target.closest("tr").querySelector("input[type=checkbox]");
+		if(checkbox.checked) {
+		if(op == "increment")
+			cartTotalFloat += price;
+		else
+			cartTotalFloat -= price;
+			cartTotal.innerHTML = "$" + (cartTotalFloat).toFixed(2);
+		}
+	}
+
+	const decrementButtons = document.querySelectorAll(
+		"button[data-action='decrement']"
+	);
+
+	const incrementButtons = document.querySelectorAll(
+		"button[data-action='increment']"
+	);
+
+	decrementButtons.forEach(btn => {
+		btn.addEventListener("click", decrement);
+	});
+
+	incrementButtons.forEach(btn => {
+		btn.addEventListener("click", increment);
+	});
 
 </script>
 {% endblock %}

@@ -10,36 +10,25 @@
 
         <div class="flex flex-nowrap gap-x-5 mb-6">
             <div class="w-full">
-                {{ render_field(form.f_name, class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder="First Name") }}
+                {{ render_field(form.f_name, class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500") }}
             </div>
             <div class="w-full">
-                {{ render_field(form.l_name, class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder="Last Name") }}
+                {{ render_field(form.l_name, class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500") }}
             </div>
         </div>
 
         <div class="w-full">
-            {{ render_field(form.dob, class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder="Date of Birth") }}
+            {{ render_field(form.dob, class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500") }}
         </div>
 
         <hr/>
 
         <div class="flex flex-nowrap gap-x-5 mb-6">
             <div class="w-full">
-                {{ render_field(form.username, class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder="Username") }}
+                {{ render_field(form.username, class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500") }}
             </div>
             <div class="w-full">
-                {{ render_field(form.email, class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder="Email Address") }}
-            </div>
-        </div>
-
-        <hr/>
-
-        <div class="flex flex-nowrap gap-x-5 mb-6">
-            <div class="w-full">
-                {{ render_field(form.password, class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder="Password") }}
-            </div>
-            <div class="w-full">
-                {{ render_field(form.confirm, class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder="Confirm Password") }}
+                {{ render_field(form.email, class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500") }}
             </div>
         </div>
 
@@ -47,10 +36,21 @@
 
         <div class="flex flex-nowrap gap-x-5 mb-6">
             <div class="w-full">
-                {{ render_field(form.country_code, class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder="Country Code") }}
+                {{ render_field(form.password, class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500") }}
             </div>
             <div class="w-full">
-                {{ render_field(form.mobile_number, class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder="Mobile Number") }}
+                {{ render_field(form.confirm, class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500") }}
+            </div>
+        </div>
+
+        <hr/>
+
+        <div class="flex flex-nowrap gap-x-5 mb-6">
+            <div class="w-full">
+                {{ render_field(form.country_code, class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500") }}
+            </div>
+            <div class="w-full">
+                {{ render_field(form.mobile_number, class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500") }}
             </div>
         </div>
 
@@ -58,13 +58,13 @@
 
         <div class="flex flex-nowrap gap-x-5 mb-6">
             <div class="basis-2/5">
-                {{ render_field(form.billing_address, class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder="Billing Address") }}
+                {{ render_field(form.billing_address, class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500") }}
             </div>
             <div class="basis-2/5">
-                {{ render_field(form.shipping_address, class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder="Shipping Address") }}
+                {{ render_field(form.shipping_address, class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500") }}
             </div>
             <div class="basis-1/5">
-                {{ render_field(form.zip_code, class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder="Zip Code") }}
+                {{ render_field(form.zip_code, class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500") }}
             </div>
         </div>
 

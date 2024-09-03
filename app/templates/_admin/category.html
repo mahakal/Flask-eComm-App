@@ -1,0 +1,38 @@
+{% if categories %}
+<div>
+    <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-semibold pl-2">Product Category</h2>
+        <div class="flex space-x-2">
+            <input type="text" placeholder="Order No." class="block w-32 border-gray-300 rounded-md shadow-sm">
+            <button class="bg-blue-500 text-white px-4 py-2 rounded-md">Query</button>
+        </div>
+    </div>
+
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white border border-gray-300">
+            <thead>
+                <tr class="bg-gray-200 text-gray-600 uppercase text-left text-sm leading-normal">
+                    <th class="py-3 px-6">ID</th>
+                    <th class="py-3 px-6">Category</th>
+                    <th class="py-3 px-6">Product Count</th>
+                </tr>
+            </thead>
+            <tbody class="text-gray-600 text-sm">
+                {% for category in categories %}
+                <tr class="hover:bg-gray-100 border-b border-gray-300" onclick="document.getElementById(`details-{{ category.id }}`).classList.toggle('hidden');">
+                    <td class="py-3 px-6">{{ categories.id }}</td>
+                    <td class="py-3 px-6">{{ categories.category }}</td>
+                    <td class="py-3 px-6">{{ categories.count }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% else %}
+<div class="w-full shadow-md rounded-sm border-black border-2">
+	<div class="flex justify-center items-center h-80 shadow-sm">
+	  <p class="bg-gray-100 p-8 text-gray-500">No Categories have been added yet!!</p>
+	</div>
+</div>
+{% endif %}

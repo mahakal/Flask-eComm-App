@@ -11,7 +11,7 @@
         <!-- Mobile viewport optimized: h5bp.com/viewport -->
         <meta name="viewport" content="width=device-width" />
         <!-- <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp,container-queries"></script> -->
-        <link rel="stylesheet" href="{{url_for('static', filename='css/output-style.css')}}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/output-style.css') }}">
     </head>
 
     <body>
@@ -32,7 +32,7 @@
                         {% endif %}
                     {% endwith %}
 
-                <div class="m-6 grow">
+                <div class="grow flex flex-col">
                     {% block content %}{% endblock %}
                 </div>
 

@@ -1,3 +1,4 @@
+import secrets
 from datetime import datetime, timezone
 
 from sqlalchemy.ext.associationproxy import association_proxy
@@ -28,12 +29,26 @@ class Review(db.Model):
 
 class Order(db.Model):
 	id = Column(db.Integer, primary_key=True, autoincrement=True)
-	# TODO: Order Details and add UUID
+	order_id = Column(
+		db.String, unique=True, default=lambda: secrets.token_hex(8).upper()
+	)
+	subtotal = Column(db.Float, nullable=False)
+	shipping = Column(db.Float)
+	discount = Column(db.Float)
+	tax = Column(db.Float)
+	total = Column(db.Float, nullable=False)
 	payment_method = Column(db.String(20))
-	payment_done = Column(db.Integer)
-	status = Column(db.String(30))
+	payment_done = Column(db.Boolean)
+	payment_status = Column(db.String(30))
+	order_status = Column(db.String(30), default="placed")
+	order_note = Column(db.String(500))
 	created_at = Column(
 		db.DateTime, nullable=False, default=datetime.now(timezone.utc)
+	)
+	updated_at = Column(
+		db.DateTime,
+		default=datetime.now(timezone.utc),
+		onupdate=datetime.now(timezone.utc),
 	)
 
 	user_id = Column(db.Integer, db.ForeignKey("user.id"))
@@ -56,11 +71,27 @@ class Order(db.Model):
 
 
 class OrderedProduct(db.Model):
+	sku = Column(db.String(100))
+	price = Column(db.Float)
+	quantity = Column(db.Integer, default=1)
+	subtotal = Column(db.Float)
+	discount = Column(db.Float)
+	tax = Column(db.Float)
+	total = Column(db.Float)
+
+	created_at = Column(
+		db.DateTime, nullable=False, default=datetime.now(timezone.utc)
+	)
+	updated_at = Column(
+		db.DateTime,
+		default=datetime.now(timezone.utc),
+		onupdate=datetime.now(timezone.utc),
+	)
+
 	order_id = Column(db.Integer, db.ForeignKey("order.id"), primary_key=True)
 	product_id = Column(
 		db.Integer, db.ForeignKey("product.id"), primary_key=True
 	)
-	quantity = Column(db.Integer)
 
 	order = db.relationship("Order", back_populates="ordered_product")
 	product = db.relationship("Product")
@@ -93,10 +124,15 @@ cart = db.Table(
 
 # class OrderStatus(db.Model):
 #     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-#     # TODO: enum (placed, processing, dispatched, last_mile, in_route,
-# 	  # refund, return)
+#     # TODO: enum (placed, cancelled, processing, dispatched, last_mile,
+# 	  # in_route, delivered, refund, return)
 #
 #     status = db.Column(db.Integer)
 
 # class OrderPayment(db.Model):
-#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+# 	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+# 	TODO: enum (cash_on_delivery, net_banking, debit_card, e-wallet)
+# 	method:
+# 	payment_done: boolean
+# 	TODO: enum (waiting, confirmed, failed, cancelled)
+# 	status:

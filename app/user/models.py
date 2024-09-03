@@ -1,7 +1,11 @@
+# import uuid
+
 from datetime import datetime, timezone
 
 from flask_login import UserMixin
 from sqlalchemy.ext.hybrid import hybrid_property
+# from sqlalchemy_utils import UUIDType
+
 
 from app.database import Column, db
 from app.extensions import bcrypt
@@ -10,6 +14,7 @@ from app.models import cart, wishlist
 
 class User(UserMixin, db.Model):
 	id = Column(db.Integer, primary_key=True, autoincrement=True)
+	# s_id = Column(UUIDType(), default=uuid.uuid4, unique=True)
 	first_name = Column(db.String(30), nullable=False)
 	last_name = Column(db.String(30), nullable=False)
 	dob = Column(db.Date, nullable=False)
@@ -22,9 +27,10 @@ class User(UserMixin, db.Model):
 	created_at = Column(
 		db.DateTime, nullable=False, default=datetime.now(timezone.utc)
 	)
+
 	accept_tos = Column(db.Boolean)
 	is_active = Column(db.Boolean, default=False)
-	is_admin = Column(db.String(80), default=False)
+	is_admin = Column(db.Boolean, default=False)
 
 	addresses = db.relationship("Address")
 	active_address = db.relationship(
@@ -98,6 +104,18 @@ class User(UserMixin, db.Model):
 	def remove_from_order(self, order):
 		self._remove_from_relation("order", order)
 
+	def move_to_cart(self, products):
+		self.cart_products.extend(
+			product
+			for product in products
+			if product not in self.cart_products
+		)
+		for product in products:
+			if product in self.wishlist_products:
+				self.remove_from_wishlist(product)
+		db.session.add(self)
+		db.session.commit()
+
 
 class Address(db.Model):
 	id = Column(db.Integer, primary_key=True, autoincrement=True)
@@ -105,7 +123,6 @@ class Address(db.Model):
 	billing_address = Column(db.String(80), nullable=False)
 	shipping_address = Column(db.String(80), nullable=False)
 	zip_code = Column(db.Integer, nullable=False)
-	# TODO: constraint can be True for one address per User
 	is_active = Column(db.Boolean)
 
 	user_id = Column(db.Integer, db.ForeignKey("user.id"))

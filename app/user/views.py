@@ -1,4 +1,12 @@
-from flask import Blueprint, flash, redirect, render_template, request, url_for
+from flask import (
+	Blueprint,
+	flash,
+	redirect,
+	render_template,
+	request,
+	url_for,
+	session,
+)
 from flask_login import login_required, login_user, logout_user
 
 from app.database import db
@@ -47,6 +55,7 @@ def login():
 			user = User.query.filter_by(email=form.username.data).first()
 		login_user(user, remember=True)
 		flash("You are logged in.", "success")
+		session["cart_products"] = len(user.cart_products)
 		return redirect(url_for("index.index"))
 	return render_template("user/login.html", form=form)
 

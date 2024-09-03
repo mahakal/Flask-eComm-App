@@ -1,0 +1,90 @@
+{% if users %}
+<div>
+	
+	<div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-semibold pl-2">User List</h2>
+        <div class="flex space-x-2">
+            <input type="text" placeholder="User No." class="block w-32 border-gray-300 rounded-md shadow-sm">
+            <button class="bg-blue-500 text-white px-4 py-2 rounded-md">Query</button>
+        </div>
+    </div>
+
+	<div class="overflow-x-auto">
+		<table class="min-w-full bg-white border border-gray-300">
+			<thead>
+                <tr class="bg-gray-200 text-gray-600 uppercase text-left text-sm leading-normal">
+                    <th class="py-3 px-6">ID</th>
+                    <th class="py-3 px-6">Full Name</th>
+                    <th class="py-3 px-6">Username</th>
+                    <th class="py-3 px-6">Email</th>
+                    <th class="py-3 px-6">Mobile Number</th>
+                    <th class="py-3 px-6">Created At</th>
+                </tr>
+            </thead>
+			<tbody class="text-gray-600 text-sm">
+				{% for user in users %}
+				<tr class="hover:bg-gray-100 border-b border-gray-300" onclick="document.getElementById(`details-{{ user.id }}`).classList.toggle('hidden');">
+                    <td class="py-3 px-6">{{ user.id }}</td>
+                    <td class="py-3 px-6">{{ user.first_name }} {{ user.last_name }}</td>
+                    <td class="py-3 px-6">{{ user.username }}</td>
+                    <td class="py-3 px-6">{{ user.email }}</td>
+                    <td class="py-3 px-6">{{ user.mobile_number }}</td>
+                    <td class="py-3 px-6">{{ user.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                </tr>
+				<tr id="details-{{ user.id }}" class="hidden bg-gray-50">
+					<td colspan="6" class="p-4">
+					  <div class="grid grid-cols-2 gap-4">
+						<div>
+						  <h3 class="font-bold mb-2">User Addresses:</h3>
+							{% for address in user.addresses %}
+								<div class="mb-2">
+									<p>Billing Address:  {{ address.billing_address }}</p>
+									<p>Shipping Address:  {{ address.shipping_address }}</p>
+									<p>Zip Code: {{ address.zip_code }}</p>
+									<p>Active: {{ address.is_active }}</p>
+								</div>
+							{% endfor %}
+						</div>
+						<div>
+						  <h3 class="font-bold mb-2">User Reviews:</h3>
+						  {% for review in user.reviews %}
+							<div class="flex mb-4">
+							<img src="{{ review.product.image }}" alt="{{ review.product.name }}" class="shrink-0 object-fill w-24 h-24 rounded-md">
+							<div class="ml-2">
+								<p class="truncate">{{ review.product.name }}</p>
+								<p class="text-green-700">${{ '%0.2f' % review.product.price|float|round(2) }}</p>
+								<div class="flex items-center font-medium  my-1">
+                                    {% from "_stars.html" import stars %}
+                                    {{ stars('p', review.product.id, review.rating) }}
+                                </div>
+								<p>{{ review.comment }}</p>
+								<p class="mt-1">Created At: {{ review.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+							</div>
+							</div>
+							{% endfor %}
+						</div>
+					  </div>
+					</td>
+				  </tr>
+				{% endfor %}
+			</tbody>
+        </table>
+	</div>
+
+	<div class="flex justify-end mt-4">
+        <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
+            <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                &laquo;
+            </a>
+            <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">1</a>
+            <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                &raquo;
+            </a>
+        </nav>
+    </div>
+</div>
+{% else %}
+<div class="w-full shadow-md rounded-sm border-black border-2">
+    <div class="flex justify-center items-center h-80 shadow-sm"><p class="bg-gray-100 p-8 text-gray-500">No Users yet!!</p></div>
+</div>
+{% endif %}

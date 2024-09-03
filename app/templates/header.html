@@ -1,4 +1,4 @@
-<nav class="bg-white shadow-md border-t-2 sticky top-0 z-10">
+<nav class="bg-white shadow sticky top-0 z-10">
     <div class="container mx-auto px-4 lg:px-12 flex justify-between items-center py-4">
 
         <div class="flex items-center">
@@ -21,15 +21,21 @@
         {% if current_user.is_authenticated %}
             <div class="flex items-center space-x-6">
                 <a href="{{ url_for('profile.cart') }}" class="relative text-gray-800 hover:text-blue-700">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-cart"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-cart"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+					{% if session["cart_products"] %}
+					<div class="absolute inline-flex items-center justify-center py-1 px-2 text-base/4 font-bold text-white bg-red-500 border-2 border-white rounded-full bottom-3.5 left-3.5">{{ session["cart_products"] }}</div>
+					{% endif %}
                 </a>
 
                 <div class="relative">
-                    <button id="user-menu" class="text-gray-800 hover:text-blue-700 focus:outline-none">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    <button id="user-menu" class=" block text-gray-800 hover:text-blue-700 focus:outline-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                     </button>
 
-                    <div id="user-menu-dropdown" class="hidden absolute left-0 mt-2 w-48 bg-white shadow-lg rounded-md z-20">
+                    <div id="user-menu-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md z-20">
+						{% if current_user.is_admin %}
+						<a href="{{ url_for('admin.index') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Admin Dashboard</a>
+						{% endif %}
                         <a href="{{ url_for('user.profile') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Profile</a>
                         <a href="{{ url_for('profile.wishlist') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Wishlist</a>
                         <hr class="border-gray-200">
