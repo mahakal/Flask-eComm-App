@@ -5,6 +5,7 @@ dnspython==2.6.1
 email_validator==2.2.0
 environs==11.0.0
 Flask==3.0.3
+Flask-Admin==1.6.1
 Flask-Bcrypt==1.0.1
 Flask-Login==0.6.3
 Flask-SQLAlchemy==3.1.1
@@ -16,6 +17,7 @@ Jinja2==3.1.4
 MarkupSafe==2.1.5
 marshmallow==3.21.3
 packaging==24.1
+psycopg2-binary==2.9.9
 python-dotenv==1.0.1
 ruff==0.6.1
 SQLAlchemy==2.0.31

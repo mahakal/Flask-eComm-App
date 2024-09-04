@@ -9,8 +9,8 @@ from app.models import Review
 
 class Product(db.Model):
 	id = Column(db.Integer, primary_key=True, autoincrement=True)
-	name = Column(db.String(30), nullable=False)
-	description = Column(db.String(150), nullable=False)
+	name = Column(db.String(200), nullable=False)
+	description = Column(db.String(2000), nullable=False)
 	price = Column(db.Float, nullable=False)
 	tax = Column(db.Float, default=0)
 	sold_count = Column(db.Integer, default=0)
