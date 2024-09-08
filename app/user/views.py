@@ -25,6 +25,7 @@ def signup():
 			billing_address=form.billing_address.data,
 			shipping_address=form.shipping_address.data,
 			zip_code=form.zip_code.data,
+			is_active=True,
 		)
 		user = Users(
 			username=form.username.data,
