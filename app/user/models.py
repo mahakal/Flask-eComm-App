@@ -12,7 +12,7 @@ from app.extensions import bcrypt
 from app.models import cart, wishlist
 
 
-class User(UserMixin, db.Model):
+class Users(UserMixin, db.Model):
 	id = Column(db.Integer, primary_key=True, autoincrement=True)
 	# s_id = Column(UUIDType(), default=uuid.uuid4, unique=True)
 	first_name = Column(db.String(30), nullable=False)
@@ -36,7 +36,7 @@ class User(UserMixin, db.Model):
 	active_address = db.relationship(
 		"Address",
 		uselist=False,
-		primaryjoin="and_(User.id==Address.user_id, Address.is_active==True)",
+		primaryjoin="and_(Users.id==Address.user_id, Address.is_active==True)",
 		viewonly=True,
 	)
 	reviews = db.relationship("Review", back_populates="user")
@@ -125,4 +125,4 @@ class Address(db.Model):
 	zip_code = Column(db.Integer, nullable=False)
 	is_active = Column(db.Boolean)
 
-	user_id = Column(db.Integer, db.ForeignKey("user.id"))
+	user_id = Column(db.Integer, db.ForeignKey("users.id"))

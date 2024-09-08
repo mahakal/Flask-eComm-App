@@ -1,67 +1,81 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="mt-20 flex justify-center">
-<div id="cart-container" class="max-w-7xl p-6 bg-gray-100 ">
+<div class="mt-4 sm:mt-10 md:mt-20 flex justify-center">
+<div id="cart-container" class="max-w-7xl px-px py-6 sm:p-6 bg-gray-100 ">
     {% if products %}
         <form method="POST" action="{{ url_for('product.checkout') }}" id="cart-form" class="space-y-6">
             <div class="bg-white rounded-lg shadow-lg">
 				<div class="overflow-x-auto">
 					<table class="min-w-full bg-white border border-gray-300">
 						<thead class="border-b border-gray-300">
-							<tr class=" text-gray-600 uppercase text-left text-sm leading-normal">
-								<th class="py-3 px-6"></th>
-								<th class="py-3 px-6">Product</th>
-								<th class="py-3 px-6">Price</th>
-								<th class="py-3 px-6">Quantity</th>
-								<th class="py-3 px-6">Subtotal</th>
-								<th class="py-3 px-6"></th>
+							<tr class="text-gray-600 uppercase text-left text-xs sm:text-sm leading-none sm:leading-normal">
+								<th class="sm:py-3 px-0 sm:px-2 lg:px-6"></th>
+								<th class="sm:py-3 px-0 sm:px-2 lg:px-6">Product</th>
+								<th class="sm:py-3 px-0 sm:px-2 lg:px-6">Price</th>
+								<th class="sm:py-3 px-0 sm:px-2 lg:px-6">Quantity</th>
+								<th class="sm:py-3 px-0 sm:px-2 lg:px-6">Subtotal</th>
+								<th class="sm:py-3 px-0 sm:px-2 lg:px-6"></th>
 							</tr>
 						</thead>
 						<tbody class="text-gray-600 text-sm" id="cart-list">
 							{% for product in products %}
-							<tr class="border-b border-gray-300" id={{ product.id }}>
-								<td class="py-3 px-6"><input type="checkbox" name="product" value="{{ product.id }}" class="mr-4 rounded-sm focus:ring-offset-0 focus:ring-0" checked></td>
-								<td class="py-3 px-6">
-									<a href="{{ url_for('product.product', product_id=product.id) }}" class="flex grow items-center space-x-5">
-										<img src="{{ product.image }}" alt="{{ product.name }}" class="shrink-0 object-fill w-24 h-24 rounded-md transition duration-300 ease-in-out hover:scale-[2.0]">
-										<div class="flex flex-col pl-10">
-											<p class="text-base font-semibold text-gray-800 line-clamp-3">{{ product.name }}</p>
-											<div class="flex items-center font-medium  mt-1">
+							<tr class="border-b border-gray-300" id="{{ product.id }}">
+								<td class="py-3 px-0 sm:px-2 lg:px-6"><input type="checkbox" name="product" value="{{ product.id }}" class="mr-1 lg:mr-4 rounded-sm focus:ring-offset-0 focus:ring-0" checked></td>
+								<td class="py-3 px-0 sm:px-2 lg:px-6">
+									<a href="{{ url_for('product.product', product_id=product.id) }}" class="flex flex-col sm:flex-row grow items-center lg:space-x-5">
+										<img src="{{ product.image }}" alt="{{ product.name }}" class="shrink-0 object-fill w-10 h-10 lg:w-24 lg:h-24 rounded-md transition duration-300 ease-in-out hover:scale-[2.0]">
+										<div class="flex flex-col lg:pl-10">
+											<p class="text-xs sm:text-base sm:font-semibold text-gray-800 line-clamp-5 sm:line-clamp-4">{{ product.name }}</p>
+											<div class="flex items-center font-medium mt-1">
 												{% from "_stars.html" import stars %}
-												{{ stars('p', product.id, product.average_rating) }}
-												<p class="ml-2 text-sm text-gray-600">({{ product.rating_count }} reviews)</p>
+												{{ stars('p', product.id, product.average_rating, class="w-3 sm:w-4") }}
+												<p class="ml-px sm:ml-2 text-xs sm:text-sm text-gray-600">({{ product.rating_count }} reviews)</p>
 											</div>
 										</div>
 									</a>
 								</td>
-								<td class="py-3 px-6 text-base font-medium text-green-700" data-id="price">${{ '%0.2f' % product.price|float|round(2) }}</td>
-								<td class="py-3 px-6">
-									<div class="flex flex-row h-10 w-24 bg-transparent border border-gray-200">
-										<button type="button" data-action="decrement" class="px-1 bg-transparent text-gray-600 hover:text-gray-700 hover:bg-gray-200">
-											<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+								<td class="py-3 px-0 sm:px-2 lg:px-6 text-xs sm:text-base font-medium text-green-700" data-id="price">${{ '%0.2f' % product.price|float|round(2) }}</td>
+								<td class="py-3 px-0 sm:px-2 lg:px-6">
+									<div class="flex flex-row h-10 w-10 sm:w-20 lg:w-24 bg-transparent border border-gray-200">
+										<button type="button" data-action="decrement" class="sm:px-1 bg-transparent text-gray-600 hover:text-gray-700 hover:bg-gray-200">
+											<svg xmlns="http://www.w3.org/2000/svg" class="w-2 sm:w-3 feather feather-minus" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
 										</button>
-										<input name="{{ product.id }}" value="1" min="1" max="100" type="number" class="flex items-center text-gray-700 text-center w-full bg-transparent font-semibold hover:text-black focus:text-black border-0 focus:ring-offset-0 focus:ring-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none" style="-moz-appearance: textfield;">
-										<button type="button" data-action="increment" class="px-1 bg-transparent text-gray-600 hover:text-gray-700 hover:bg-gray-200">
-											<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+										<input name="{{ product.id }}" value="1" min="1" max="100" type="number" class="flex items-center p-0 sm:py-2 sm:px-4 text-xs sm:text-base text-gray-700 text-center w-full bg-transparent font-semibold hover:text-black focus:text-black border-0 focus:ring-offset-0 focus:ring-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none" style="-moz-appearance: textfield;">
+										<button type="button" data-action="increment" class="sm:px-1 bg-transparent text-gray-600 hover:text-gray-700 hover:bg-gray-200">
+											<svg xmlns="http://www.w3.org/2000/svg" class="w-2 sm:w-3 feather feather-plus" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
 										</button>
 									</div>
 								</td>
-								<td class="py-3 px-6 text-base font-medium text-green-700" data-id="subTotal">${{ '%0.2f' % product.price|float|round(2) }}</td>
-								<td class="py-3 px-6"><div class="ml-6 m-4" onclick="remove(event, {{ product.id }})">
-									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-								</div></td>
+								<td class="sm:py-3 px-0 sm:px-2 lg:px-6 text-xs sm:text-base font-medium text-green-700" data-id="subTotal">${{ '%0.2f' % product.price|float|round(2) }}</td>
+								<td class="sm:py-3 px-0 sm:px-2 lg:px-6">
+									<div class="lg:ml-6 lg:m-4" onclick="remove(event, {{ product.id }})">
+										<svg xmlns="http://www.w3.org/2000/svg" class="w-3 sm:w-6 feather feather-x" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+									</div>
+								</td>
 							</tr>
 							{% endfor %}
-							<tr class="border-b border-gray-300">
-								<td class="py-3 px-6"></td>
-								<td class="py-3 px-6"></td>
-								<td class="py-3 px-6"></td>
-								<td class="py-3 px-6 text-lg font-semibold">Cart Total: </td>
-								<td class="py-3 px-6 text-lg font-semibold text-green-700" id="cartTotal">${{ '%0.2f' % cart_total|float|round(2) }}</td>
-							</tr>
+							<!--<tfoot>
+								<tr class="border-b border-gray-300">
+								  <td>cart total</td>
+								  <td id="cartTotal">${{ '%0.2f' % cart_total|float|round(2) }}</td>
+								</tr>
+							</tfoot>-->
+							<!--<tr class="border-b border-gray-300">
+								<td class="sm:py-3 px-0 sm:px-2 lg:px-6"></td>
+								<td class="sm:py-3 px-0 sm:px-2 lg:px-6"></td>
+								<td class="sm:py-3 px-0 sm:px-2 lg:px-6"></td>
+								<td class="sm:py-3 px-0 sm:px-2 lg:px-6 text-xs sm:text-lg font-semibold">Cart Total: </td>
+								<td class="sm:py-3 px-0 sm:px-2 lg:px-6 text-xs sm:text-lg font-semibold text-green-700" id="cartTotal">${{ '%0.2f' % cart_total|float|round(2) }}</td>
+								<td class="sm:py-3 px-0 sm:px-2 lg:px-6"></td>
+							</tr>-->
 						</tbody>
 					</table>
+					<br/>
+				</div>
+				<div class="flex justify-end items-center pr-10">
+					<p class="text-sm sm:text-lg">Cart Total:&nbsp;</p>
+					<p class="text-sm sm:text-lg font-semibold text-green-700" id="cartTotal" >${{ '%0.2f' % cart_total|float|round(2) }}</p>
 				</div>
             </div>
             <input type="submit" value="Buy Now" name="buy" id="cart_checkout" class="w-full py-3 bg-green-500 text-white rounded-md hover:bg-green-600">

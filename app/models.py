@@ -15,10 +15,10 @@ class Review(db.Model):
 		db.DateTime, nullable=False, default=datetime.now(timezone.utc)
 	)
 
-	user_id = Column(db.Integer, db.ForeignKey("user.id"))
+	user_id = Column(db.Integer, db.ForeignKey("users.id"))
 	product_id = Column(db.Integer, db.ForeignKey("product.id"))
 
-	user = db.relationship("User", back_populates="reviews", uselist=False)
+	user = db.relationship("Users", back_populates="reviews", uselist=False)
 	product = db.relationship(
 		"Product", back_populates="reviews", uselist=False
 	)
@@ -51,10 +51,10 @@ class Order(db.Model):
 		onupdate=datetime.now(timezone.utc),
 	)
 
-	user_id = Column(db.Integer, db.ForeignKey("user.id"))
+	user_id = Column(db.Integer, db.ForeignKey("users.id"))
 	address_id = Column(db.Integer, db.ForeignKey("address.id"))
 
-	user = db.relationship("User", back_populates="orders", uselist=False)
+	user = db.relationship("Users", back_populates="orders", uselist=False)
 	address = db.relationship("Address", uselist=False)
 
 	ordered_product = db.relationship(
@@ -104,7 +104,7 @@ class OrderedProduct(db.Model):
 # Otherwise this will suffice
 wishlist = db.Table(
 	"wishlist",
-	Column("user_id", db.ForeignKey("user.id"), primary_key=True),
+	Column("user_id", db.ForeignKey("users.id"), primary_key=True),
 	Column(
 		"product_id",
 		db.ForeignKey("product.id", ondelete="CASCADE"),
@@ -114,7 +114,7 @@ wishlist = db.Table(
 
 cart = db.Table(
 	"cart",
-	Column("user_id", db.ForeignKey("user.id"), primary_key=True),
+	Column("user_id", db.ForeignKey("users.id"), primary_key=True),
 	Column(
 		"product_id",
 		db.ForeignKey("product.id", ondelete="CASCADE"),

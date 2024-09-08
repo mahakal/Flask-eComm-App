@@ -8,7 +8,7 @@ from app.admin.views import bp as AdminBp
 from app.index.views import bp as IndexBp
 from app.models import *
 from app.product.views import bp as ProductBp
-from app.user.models import User, Address
+from app.user.models import Users, Address
 from app.product.models import Product
 from app.user.views import bp as UserBp
 from app.user_profile.views import bp as UserProfileBp
@@ -30,7 +30,7 @@ def register_extension(app):
 	login_manager.init_app(app)
 	flask_admin.init_app(app)
 	flask_admin.add_view(DashboardView(name="Dashboard", endpoint="dashboard"))
-	flask_admin.add_view(UserModelView(User, db.session, endpoint="_user"))
+	flask_admin.add_view(UserModelView(Users, db.session, endpoint="_user"))
 	flask_admin.add_view(AdminModelView(Address, db.session))
 	flask_admin.add_view(
 		AdminModelView(Product, db.session, endpoint="_product")
@@ -39,7 +39,7 @@ def register_extension(app):
 
 	@login_manager.user_loader
 	def load_user(user_id):
-		return User.query.get(int(user_id))
+		return Users.query.get(int(user_id))
 
 
 def register_blueprint(app):

@@ -18,7 +18,7 @@ from wtforms.validators import (
 	ValidationError,
 )
 
-from .models import User
+from .models import Users
 
 username_regex = re.compile(r"\W")
 
@@ -136,11 +136,11 @@ class SignupForm(FlaskForm):
 		initial_validation = super(SignupForm, self).validate()
 		if not initial_validation:
 			return False
-		user = User.query.filter_by(username=self.username.data).first()
+		user = Users.query.filter_by(username=self.username.data).first()
 		if user:
 			self.username.errors.append("Username already registered")
 			return False
-		email = User.query.filter_by(email=self.email.data).first()
+		email = Users.query.filter_by(email=self.email.data).first()
 		if email:
 			self.email.errors.append("Email already registered")
 			return False
@@ -165,9 +165,9 @@ class LoginForm(FlaskForm):
 
 		user = None
 		if not username_regex.search(self.username.data):
-			user = User.query.filter_by(username=self.username.data).first()
+			user = Users.query.filter_by(username=self.username.data).first()
 		elif "@" in self.username.data and "." in self.username.data:
-			user = User.query.filter_by(email=self.username.data).first()
+			user = Users.query.filter_by(email=self.username.data).first()
 		if not user:
 			self.username.errors.append("User/Email not registered")
 			return False

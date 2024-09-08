@@ -9,8 +9,9 @@
         </title>
 
         <!-- Mobile viewport optimized: h5bp.com/viewport -->
-        <meta name="viewport" content="width=device-width" />
-        <!-- <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp,container-queries"></script> -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp,container-queries"></script>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/output-style.css') }}">
     </head>
 
@@ -23,7 +24,7 @@
                             {% for category, message in messages %}
                                 {% if category == "success" %}
                                 <div class="flex place-content-center" id="flash" onclick=this.remove()>
-                                    <div class="flex place-content-center w-1/2 p-2 mt-6 text-lg font-bold text-gray-300 rounded-md bg-emerald-800 border-yellow-400 border-2" role="alert">
+                                    <div class="flex place-content-center sm:w-1/2 p-2 mt-6 text-lg font-bold text-gray-300 rounded-md bg-emerald-800 border-yellow-400 border-2" role="alert">
                                         <span>{{ message }}</span>
                                     </div>
                                 </div>

@@ -6,7 +6,7 @@ from flask_admin import BaseView, expose
 
 from app.models import Order
 from app.product.models import Product
-from app.user.models import User
+from app.user.models import Users
 from app.utils import is_admin_required
 
 # Flask-Admin
@@ -87,5 +87,5 @@ def products():
 @is_admin_required
 @login_required
 def users():
-	users = User.query.order_by("id").limit(20).all()
+	users = Users.query.order_by("id").limit(20).all()
 	return render_template("_admin/user.html", users=users)

@@ -1,12 +1,12 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="max-w-3xl my-10 mx-auto p-6 bg-white shadow-xl rounded-sm border-black border">
+<div class="max-w-3xl my-10 mx-auto p-2 sm:p-6 bg-white shadow-xl rounded-sm border-black border">
     {% if products %}
         <form method="POST" action="{{ url_for('product.order') }}" class="space-y-6">
             <div class="bg-gray-100 rounded-lg divide-y divide-dashed divide-gray-400/90">
             {% for product in products %}
-                <div class="flex space-x-5 p-4">
+                <div class="flex flex-col sm:flex-row items-center space-x-5 p-4">
                     <img src="{{ product.image }}" alt="{{ product.name }}" class="shrink-0 w-24 h-24 object-fill rounded-md">
                     <div>
                         <p class="text-lg font-semibold text-gray-800">Product Name: {{ product.name }}</p>

@@ -22,7 +22,7 @@ bp = Blueprint("product", __name__, url_prefix="/product")
 
 @bp.route("/<int:product_id>")
 def product(product_id):
-	# TODO: db.get_or_404(User, id)
+	# TODO: db.get_or_404(Users, id)
 	product = Product.query.get(product_id)
 	in_cart = (
 		True

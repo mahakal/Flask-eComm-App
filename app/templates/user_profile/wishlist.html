@@ -10,7 +10,7 @@
                 {% for product in products %}
                     <div id="{{ product.id }}" class="flex items-center p-4">
                         <input type="checkbox" name="product" value="{{ product.id }}" checked class="mr-4 rounded-sm focus:ring-offset-0 focus:ring-0">
-                        <a href="{{ url_for('product.product', product_id=product.id) }}" class="flex grow items-center space-x-5">
+                        <a href="{{ url_for('product.product', product_id=product.id) }}" class="flex flex-col sm:flex-row grow items-center sm:space-x-5">
                             <img src="{{ product.image }}" alt="{{ product.name }}" class="shrink-0 object-fill w-24 h-24 rounded-md">
                             <div class="flex flex-col">
                                 <p class="text-lg font-semibold text-gray-800 ">{{ product.name }}</p>
@@ -22,8 +22,8 @@
                                 </div>
                             </div>
                         </a>
-						<div class="ml-6 m-4" onclick="remove({{ product.id }})">
-							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+						<div class="ml-2 sm:ml-6 sm:m-4" onclick="remove({{ product.id }})">
+							<svg xmlns="http://www.w3.org/2000/svg" class="w-4 sm:w-6 feather feather-x" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
 						</div>
                     </div>
                 {% endfor %}

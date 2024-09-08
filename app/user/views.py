@@ -12,7 +12,7 @@ from flask_login import login_required, login_user, logout_user
 from app.database import db
 
 from .forms import LoginForm, SignupForm
-from .models import Address, User
+from .models import Address, Users
 
 bp = Blueprint("user", __name__, url_prefix="/user")
 
@@ -26,7 +26,7 @@ def signup():
 			shipping_address=form.shipping_address.data,
 			zip_code=form.zip_code.data,
 		)
-		user = User(
+		user = Users(
 			username=form.username.data,
 			password=form.password.data,
 			email=form.email.data,
@@ -50,9 +50,9 @@ def signup():
 def login():
 	form = LoginForm(request.form)
 	if form.validate_on_submit():
-		user = User.query.filter_by(username=form.username.data).first()
+		user = Users.query.filter_by(username=form.username.data).first()
 		if not user:
-			user = User.query.filter_by(email=form.username.data).first()
+			user = Users.query.filter_by(email=form.username.data).first()
 		login_user(user, remember=True)
 		flash("You are logged in.", "success")
 		session["cart_products"] = len(user.cart_products)

@@ -5,7 +5,7 @@
     <p class="text-xl font-semibold text-green-600 mb-4">Your order for the following item(s) has been successfully placed:</p>
     <div class="bg-gray-100 rounded-lg divide-y divide-dashed divide-gray-400/90">
         {% for product in products %}
-            <div class="flex space-x-5 p-4">
+            <div class="flex flex-col sm:flex-row items-center space-x-5 p-4">
                 <img src="{{ product.image }}" alt="{{ product.name }}" class="shrink-0 w-24 h-24 object-fill rounded-md">
                 <div>
                     <p class="text-lg font-semibold text-gray-800">Product Name: {{ product.name }}</p>
