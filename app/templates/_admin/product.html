@@ -32,7 +32,7 @@
 						<td class="py-3 px-6">{{ product.id }}</td>
 						<td class="py-3 px-6">{{ product.name }}</td>
 						<td class="py-3 px-6"><img src={{ product.image }} alt={{ product.name }} class="w-8 h-8 transition duration-300 ease-in-out hover:scale-[5.0] "></td>
-						<td class="py-3 px-6">{{ '%0.2f' % product.price|float|round(2) }}</td>
+						<td class="py-3 px-6 text-right">{{ '%0.2f' % product.price|float|round(2) }}</td>
 						<td class="py-3 px-6">{{ product.sold_count }}</td>
 						<td class="py-3 px-6">{{ product.stock }}</td>
 						<td class="py-3 px-6">{{ product.sku }}</td>

@@ -35,7 +35,7 @@
 										</div>
 									</a>
 								</td>
-								<td class="py-3 px-0 sm:px-2 lg:px-6 text-xs sm:text-base font-medium text-green-700" data-id="price">${{ '%0.2f' % product.price|float|round(2) }}</td>
+								<td class="py-3 px-0 sm:px-2 lg:px-6 text-xs sm:text-base font-medium text-green-700 text-right pr-1" data-id="price">${{ '%0.2f' % product.price|float|round(2) }}</td>
 								<td class="py-3 px-0 sm:px-2 lg:px-6">
 									<div class="flex flex-row h-10 w-10 sm:w-20 lg:w-24 bg-transparent border border-gray-200">
 										<button type="button" data-action="decrement" class="sm:px-1 bg-transparent text-gray-600 hover:text-gray-700 hover:bg-gray-200">
@@ -47,7 +47,7 @@
 										</button>
 									</div>
 								</td>
-								<td class="sm:py-3 px-0 sm:px-2 lg:px-6 text-xs sm:text-base font-medium text-green-700" data-id="subTotal">${{ '%0.2f' % product.price|float|round(2) }}</td>
+								<td class="sm:py-3 px-0 sm:px-2 lg:px-6 text-xs sm:text-base font-medium text-green-700 text-right pr-1" data-id="subTotal">${{ '%0.2f' % product.price|float|round(2) }}</td>
 								<td class="sm:py-3 px-0 sm:px-2 lg:px-6">
 									<div class="lg:ml-6 lg:m-4" onclick="remove(event, {{ product.id }})">
 										<svg xmlns="http://www.w3.org/2000/svg" class="w-3 sm:w-6 feather feather-x" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
