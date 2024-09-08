@@ -26,7 +26,7 @@
 						<small class="text-gray-500 text-xs sm:text-base">{{ product.brand }}</small>
 					</div>
 					<div class="flex h-4 sm:items-center sm:h-6 text-gray-800">
-						{{ stars('p', product.id, product.average_rating) }}&nbsp;<p class="text-sm sm:text-base sm:font-semibold text-nowrap">({{ product.rating_count }} reviews)</p>
+						{{ stars('p', product.id, product.average_rating, class="h-4 sm:h-6") }}&nbsp;<p class="text-sm sm:text-base sm:font-semibold text-nowrap">({{ product.rating_count }} reviews)</p>
 					</div>
                 </div>
             </div>
@@ -34,8 +34,13 @@
             <p class="mt-2 text-lg font-semibold text-green-700">Price: ${{ '%0.2f' % product.price|float|round(2) }}</p>
 
             <div class="mt-4 flex flex-row space-x-2">
+				{% if current_user.is_authenticated %}
                 <input type="button" value="{{ cart_value }}" name="cart" class="w-full sm:w-auto px-2 py-1 sm:px-4 sm:py-2 text-sm sm:text-base bg-blue-500 text-white sm:rounded-md hover:bg-blue-600" onclick="onClick('Cart', {{ product.id }})" id="c{{ product.id }}">
 				<input type="button" value="{{ wishlist_value}}" name="wishlist" class="w-full sm:w-auto px-2 py-1 sm:px-4 sm:py-2 text-sm sm:text-base bg-gray-500 text-white sm:rounded-md hover:bg-gray-600" onclick="onClick('Wishlist', {{ product.id }})" id="w{{ product.id }}">
+				{% else %}
+				<input type="button" value="{{ cart_value }}" name="cart" class="w-full sm:w-auto px-2 py-1 sm:px-4 sm:py-2 text-sm sm:text-base bg-blue-500 text-white sm:rounded-md hover:bg-blue-600" onclick="location.href = '{{ url_for('user.login') }}';" id="c{{ product.id }}">
+				<input type="button" value="{{ wishlist_value}}" name="wishlist" class="w-full sm:w-auto px-2 py-1 sm:px-4 sm:py-2 text-sm sm:text-base bg-gray-500 text-white sm:rounded-md hover:bg-gray-600" onclick="location.href = '{{ url_for('user.login') }}';" id="w{{ product.id }}">
+				{% endif %}
             </div>
 
             <form method="POST" action="{{ url_for("product.checkout") }}" class="mt-2 sm:mt-4">
@@ -43,18 +48,18 @@
                 <input type="submit" value="Buy Now" name="buy" class="w-full px-2 py-1 text-sm sm:text-base sm:sm:px-4 sm:py-2 bg-green-500 text-white sm:rounded-md hover:bg-green-600">
             </form>
 
-            <div class="lg:mt-6">
+            <div class="my-3 lg:my-6">
                 {% if product.reviews %}
                     {% for review in product.reviews %}
-                        <div class="sm:mt-4">
-                            <div class="flex items-center font-medium text-gray-800">
-                                {{ review.user.username }} -&nbsp;{{ stars('r', review.id, product.average_rating) }}
+                        <div class="my-2 sm:my-4">
+                            <div class="my-1 flex items-center h-4 sm:h-6 text-xs sm:text-base font-medium text-gray-800">
+                                {{ review.user.username }} -&nbsp;{{ stars('r', review.id, product.average_rating, class="h-4 sm:h-6") }}
                             </div>
-                            <div class="text-gray-600">{{ review.comment}}</div>
+                            <div class="text-gray-600 text-xs sm:text-base">{{ review.comment}}</div>
                         </div>
                     {% endfor %}
                 {% else %}
-                    <div class="flex flex-col items-center mt-5 mb-5 lg:mt-20 text-gray-600 text-sm font-semibold">
+                    <div class="flex flex-col items-center my-5 lg:mt-20 text-gray-600 text-sm font-semibold">
                         <!-- replace with better svg -->
                         <svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="50" height="50" viewBox="0 0 300.000000 300.000000" preserveAspectRatio="xMidYMid meet">
                             <g transform="translate(0.000000,300.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none">
@@ -73,7 +78,7 @@
                             </g>
                             </svg>
                         <p>No comments yet!</p>
-                        <p class="text-xs text-gray-500">Your feedback helps others make informed decisions.</p>
+                        <p class="text-sm sm:text-base text-gray-500">Your feedback helps others make informed decisions.</p>
                     </div>
                 {% endif %}
             </div>
