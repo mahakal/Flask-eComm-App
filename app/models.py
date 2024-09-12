@@ -30,7 +30,7 @@ class Review(db.Model):
 class Order(db.Model):
 	id = Column(db.Integer, primary_key=True, autoincrement=True)
 	order_id = Column(
-		db.String, unique=True, default=lambda: secrets.token_hex(8).upper()
+		db.String(32), unique=True, default=lambda: secrets.token_hex(8).upper()
 	)
 	subtotal = Column(db.Float, nullable=False)
 	shipping = Column(db.Float)

@@ -49,7 +49,7 @@ class Product(db.Model):
 	def __repr__(self):
 		return f"<Product({self.name!r})>"
 
-	@aggregated("reviews", Column(db.Integer))
+	@aggregated("reviews", Column(db.Float))
 	def average_rating(self):
 		return func.avg(Review.rating)
 
